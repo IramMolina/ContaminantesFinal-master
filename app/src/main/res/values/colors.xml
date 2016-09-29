@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorIMECA_Bueno">#5DBF95</color>
+    <color name="colorIMECA_Regular">#EBE264</color>
+    <color name="colorIMECA_Mala">#FAB04E</color>
+    <color name="colorIMECA_MuyMala">#F26F6E</color>
+    <color name="colorIMECA_ExtremadamenteMala">#BC6BBf</color>
+
+</resources>

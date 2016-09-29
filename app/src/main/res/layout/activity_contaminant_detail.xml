@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_contaminant_detail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:weightSum="6"
+    tools:context="com.example.jekot.myapplication.ContaminantDetailActivity">
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/circle_text_detail"
+        android:background="@drawable/circle_color_detail"
+        android:text=" 30%"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:textColor="#eeeeee"
+        android:layout_gravity="center"/>
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Valor IMECA"
+        android:textSize="12dp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textColor="#999999"
+        />
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/compound_name"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:text="Nombre del Compuesto" android:layout_gravity="center" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/compound_ppm_amount"
+        android:textSize="16dp"
+        android:textColor="#aaaaaa"
+        android:text="Concentración" android:layout_gravity="center"/>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:text="Descripción o recomendaciones ante el contaminante."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/compound_description_text"
+        android:textColor="#555555"
+        android:textSize="16dp"
+        />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="40dp" />
+
+    <Button
+        android:text="Regresar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:id="@+id/go_back_detail"
+        />
+
+
+</LinearLayout>
+
+
