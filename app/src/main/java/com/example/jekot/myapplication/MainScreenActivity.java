@@ -15,9 +15,16 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -37,8 +44,11 @@ import java.util.List;
 public class MainScreenActivity extends Fragment {
 
     private double IMECATotalValue = 49;
-    private String IMECATotalText = "Extremadamente Mala";
-    private double[] IMECAContaminantValue = {0.105,150,2000}; // {no2,pm10,pm25}
+    private String IMECATotalText = "Regular";
+    private double[] IMECAContaminantValue = {0.105,200,700}; // {no2,pm10,pm25}
+    private String[] IMECADescripciones = {"Su alta concentracion puede provocar disminución de la función pulmonar y aumentar el riesgo de aparición de síntomas respiratorios como bronquitis aguda, tos y flemas, especialmente en los niños.",
+                                            "Las altas concentraciones de éste compuesto permite que el material particulado penetre por la nariz y la garganta, llegue a los pulmones y provoque problemas de respiración e irritación de los capilares pulmonares.",
+                                            "La exposisión prolongada a éstos compuestos causa bronquitis y dolencias cardiovasculares."};
     private String IMECAContaminantText = "Regular";
     private String temperatureText = "40 °C";
     private String altitudeText = "4000 m";
@@ -55,7 +65,7 @@ public class MainScreenActivity extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        getCurrentData();
         initializeCircleChart();
         initializeButtons();
         initializeValues();
@@ -73,11 +83,6 @@ public class MainScreenActivity extends Fragment {
         TextView IMECATotalValue_view = (TextView) getActivity().findViewById(R.id.imecas_total_numero);
         IMECATotalValue_view.setText(String.valueOf(Math.round(IMECATotalValue)));
 
-
-        //((TextView) getActivity().findViewById(R.id.no2_circle_text)).setBackgroundResource(IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("NO2",IMECAContaminantValue[0])));
-        //((TextView) getActivity().findViewById(R.id.pm10_circle_text)).setBackgroundResource(IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("PM10",IMECAContaminantValue[1])));
-        //((TextView) getActivity().findViewById(R.id.pm2_5_circle_text)).setBackgroundResource(IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("PM25",IMECAContaminantValue[2])));
-        //((TextView) getActivity().findViewById(R.id.no2_circle_text)).getBackground().setColorFilter(new PorterDuffColorFilter(IMECACalculator.getColor("Muy Mala"), PorterDuff.Mode.SRC_IN));
         GradientDrawable gd_NO2 = (GradientDrawable) ((TextView) getActivity().findViewById(R.id.no2_circle_text)).getBackground();
         gd_NO2.setColor(ContextCompat.getColor(getContext(),IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("NO2",IMECAContaminantValue[0]))));
 
@@ -86,6 +91,12 @@ public class MainScreenActivity extends Fragment {
 
         GradientDrawable gd_PM25 = (GradientDrawable) ((TextView) getActivity().findViewById(R.id.pm2_5_circle_text)).getBackground();
         gd_PM25.setColor(ContextCompat.getColor(getContext(),IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("PM25",IMECAContaminantValue[2]))));
+
+        ImageView recommendationsImageView = (ImageView) getActivity().findViewById(R.id.recommendations_imageview);
+        recommendationsImageView.setImageResource(IMECACalculator.getImage(IMECACalculator.getIMECAEstimate("PM10",IMECAContaminantValue[1])));
+
+        //ImageView imecaRecommendations = (ImageView) getActivity().findViewById(R.id.imagen_imecas_explicacion);
+        //imecaRecommendations.setImageResource(R.mipmap.imecas_explicacion);
     }
 
 
@@ -99,7 +110,7 @@ public class MainScreenActivity extends Fragment {
         textViewNO2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Fragment frag = new ContaminantDetailActivity("Óxido de Nitrógeno",Math.round(IMECACalculator.calculateNO2(IMECAContaminantValue[0])), IMECAContaminantValue[0], "Something something",IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("NO2",IMECAContaminantValue[0])));
+                Fragment frag = new ContaminantDetailActivity("Óxido de Nitrógeno",Math.round(IMECACalculator.calculateNO2(IMECAContaminantValue[0])), IMECAContaminantValue[0], IMECADescripciones[0],IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("NO2",IMECAContaminantValue[0])));
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_navigation_drawer,frag)
                         .commit();
@@ -110,7 +121,7 @@ public class MainScreenActivity extends Fragment {
         textViewPM10.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Fragment frag = new ContaminantDetailActivity("Partículas menores a 10 micrómetros",Math.round(IMECACalculator.calculatePM10(IMECAContaminantValue[1])), IMECAContaminantValue[1], "Something something",IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("PM10",IMECAContaminantValue[1])));
+                Fragment frag = new ContaminantDetailActivity("Partículas menores a 10 micrómetros",Math.round(IMECACalculator.calculatePM10(IMECAContaminantValue[1])), IMECAContaminantValue[1], IMECADescripciones[1],IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("PM10",IMECAContaminantValue[1])));
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_navigation_drawer,frag)
                         .commit();
@@ -121,7 +132,7 @@ public class MainScreenActivity extends Fragment {
         textViewPM25.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Fragment frag = new ContaminantDetailActivity("Partículas menores a 2.5 micrómetros",Math.round(IMECACalculator.calculatePM25(IMECAContaminantValue[2])), IMECAContaminantValue[2], "Something something", IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("PM25",IMECAContaminantValue[2])));
+                Fragment frag = new ContaminantDetailActivity("Partículas menores a 2.5 micrómetros",Math.round(IMECACalculator.calculatePM25(IMECAContaminantValue[2])), IMECAContaminantValue[2], IMECADescripciones[2], IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("PM25",IMECAContaminantValue[2])));
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_navigation_drawer,frag)
                         .commit();
@@ -201,5 +212,28 @@ public class MainScreenActivity extends Fragment {
         arr.add(2, new PieEntry(33.3f, getResources().getString(R.string.PM25)));
 
         return arr;
+    }
+
+
+    public void getCurrentData(){
+        String URL = "http://www.pollutiondrone.com/";
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        System.out.println(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+            }
+        });
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 }

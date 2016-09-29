@@ -95,4 +95,20 @@ public class IMECACalculator {
         }
     }
 
+    public static int getImage(String IMECAValue){
+        switch(IMECAValue){
+            case "Buena":
+                return R.mipmap.recomendaciones_buena;
+            case "Regular":
+                return R.mipmap.recomendaciones_regular;
+            case "Mala":
+                return R.mipmap.recomendaciones_mala;
+            case "Muy Mala":
+                return R.mipmap.recomendaciones_muymala;
+            case "Extremadamente Mala":
+                return R.mipmap.recomendaciones_extremadamentemala;
+            default:
+                return R.mipmap.ic_launcher;
+        }
+    }
 }

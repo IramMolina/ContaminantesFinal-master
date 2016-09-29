@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="spinner_filtros">
+        <item>Todos</item>
+        <item>@string/NO2</item>
+        <item>@string/PM10</item>
+        <item>@string/PM25</item>
+    </string-array>
+
+</resources>

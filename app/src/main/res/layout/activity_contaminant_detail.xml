@@ -69,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/compound_description_text"
+        android:textAlignment="center"
         android:textColor="#555555"
         android:textSize="16dp"
         />
