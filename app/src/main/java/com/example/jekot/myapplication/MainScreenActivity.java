@@ -38,7 +38,7 @@ public class MainScreenActivity extends Fragment {
 
     private double IMECATotalValue = 49;
     private String IMECATotalText = "Extremadamente Mala";
-    private double[] IMECAContaminantValue = {0.105,60,2000}; // {no2,pm10,pm25}
+    private double[] IMECAContaminantValue = {0.105,150,2000}; // {no2,pm10,pm25}
     private String IMECAContaminantText = "Regular";
     private String temperatureText = "40 °C";
     private String altitudeText = "4000 m";
@@ -63,7 +63,7 @@ public class MainScreenActivity extends Fragment {
     }
 
     private void initializeValues() {
-        this.IMECATotalValue = IMECAContaminantValue[1];
+        this.IMECATotalValue = IMECACalculator.calculatePM10(IMECAContaminantValue[1]);
         this.IMECATotalText = IMECACalculator.getIMECAEstimate("PM10",IMECAContaminantValue[1]);
 
         TextView calidadAireTotal_View = (TextView) getActivity().findViewById(R.id.calidad_aire_general_main);
