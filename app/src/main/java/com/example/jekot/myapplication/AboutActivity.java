@@ -22,5 +22,7 @@ public class AboutActivity extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-            }
+        MainScreenActivity.stillOnScreen = false;
+        HistoricalDataActivity.stillOnScreen = false;
+    }
 }

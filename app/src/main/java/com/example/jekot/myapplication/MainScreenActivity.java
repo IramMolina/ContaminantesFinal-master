@@ -38,6 +38,10 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.listener.PieRadarChartTouchListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,13 +49,15 @@ public class MainScreenActivity extends Fragment {
 
     private double IMECATotalValue = 49;
     private String IMECATotalText = "Regular";
-    private double[] IMECAContaminantValue = {0.105,200,700}; // {no2,pm10,pm25}
+    private double[] IMECAContaminantValue = {0.110,40,200}; // {no2,pm10,pm25}
     private String[] IMECADescripciones = {"Su alta concentracion puede provocar disminución de la función pulmonar y aumentar el riesgo de aparición de síntomas respiratorios como bronquitis aguda, tos y flemas, especialmente en los niños.",
                                             "Las altas concentraciones de éste compuesto permite que el material particulado penetre por la nariz y la garganta, llegue a los pulmones y provoque problemas de respiración e irritación de los capilares pulmonares.",
                                             "La exposisión prolongada a éstos compuestos causa bronquitis y dolencias cardiovasculares."};
-    private String IMECAContaminantText = "Regular";
+    private String timestampText = "Cargando";
     private String temperatureText = "40 °C";
     private String altitudeText = "4000 m";
+
+    public static boolean stillOnScreen;
 
     @Nullable
     @Override
@@ -65,11 +71,15 @@ public class MainScreenActivity extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        stillOnScreen = true;
+        HistoricalDataActivity.stillOnScreen = false;
+
         getCurrentData();
+        /*
         initializeCircleChart();
         initializeButtons();
-        initializeValues();
-
+        initializeValues();*/
     }
 
     private void initializeValues() {
@@ -83,6 +93,10 @@ public class MainScreenActivity extends Fragment {
         TextView IMECATotalValue_view = (TextView) getActivity().findViewById(R.id.imecas_total_numero);
         IMECATotalValue_view.setText(String.valueOf(Math.round(IMECATotalValue)));
 
+        TextView IMECATimestampMostRecent_view = (TextView) getActivity().findViewById(R.id.timestamp_texto);
+        IMECATimestampMostRecent_view.setText("Última actualización: ".concat(timestampText));
+
+
         GradientDrawable gd_NO2 = (GradientDrawable) ((TextView) getActivity().findViewById(R.id.no2_circle_text)).getBackground();
         gd_NO2.setColor(ContextCompat.getColor(getContext(),IMECACalculator.getColor(IMECACalculator.getIMECAEstimate("NO2",IMECAContaminantValue[0]))));
 
@@ -94,6 +108,7 @@ public class MainScreenActivity extends Fragment {
 
         ImageView recommendationsImageView = (ImageView) getActivity().findViewById(R.id.recommendations_imageview);
         recommendationsImageView.setImageResource(IMECACalculator.getImage(IMECACalculator.getIMECAEstimate("PM10",IMECAContaminantValue[1])));
+
 
         //ImageView imecaRecommendations = (ImageView) getActivity().findViewById(R.id.imagen_imecas_explicacion);
         //imecaRecommendations.setImageResource(R.mipmap.imecas_explicacion);
@@ -216,7 +231,7 @@ public class MainScreenActivity extends Fragment {
 
 
     public void getCurrentData(){
-        String URL = "http://www.pollutiondrone.com/";
+        String URL = "http://www.pollutiondrone.com/todo.php";
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
         // Request a string response from the provided URL.
@@ -225,7 +240,36 @@ public class MainScreenActivity extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
-                        System.out.println(response);
+                        if(stillOnScreen) {
+                            try {
+                                JSONArray products = (new JSONObject(response)).getJSONArray("products");
+                                JSONObject mostRecentData = (JSONObject) products.get(products.length() - 1);
+
+
+                                IMECAContaminantValue[0] = Double.valueOf((String) mostRecentData.get("no2"));
+                                IMECAContaminantValue[1] = Double.valueOf((String) mostRecentData.get("pm10"));
+                                IMECAContaminantValue[2] = Double.valueOf((String) mostRecentData.get("pm25"));
+
+                                timestampText = (String) mostRecentData.get("timestamp");
+
+
+                                if(stillOnScreen){initializeCircleChart();}
+                                if(stillOnScreen){initializeButtons();}
+                                if(stillOnScreen){initializeValues();}
+
+                                TextView temperatureTextView = (TextView) getActivity().findViewById(R.id.sidebar_temperature);
+                                String temperatureString = "Temperatura: " + mostRecentData.getString("temperature") + " °C";
+                                temperatureTextView.setText(temperatureString);;
+
+                                TextView altitudeTextView = (TextView) getActivity().findViewById(R.id.sidebar_altitud);
+                                String altitudeString = "Altitud: "+mostRecentData.getString("temperature") + " m";
+                                altitudeTextView.setText(altitudeString);
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override

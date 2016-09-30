@@ -11,56 +11,72 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:weightSum="10"
     tools:context="com.example.jekot.myapplication.HistoricalDataActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CONCENTRACIÓN V.S. TIEMPO"
+        android:text="VALOR IMECA vs TIEMPO"
         android:textSize="15dp"
         android:textColor="#999999"
-        android:layout_weight="1"
         android:textAlignment="center"/>
-
-
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart_historical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_weight="5"/>
+        android:layout_alignParentStart="true" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CARGANDO"
+        android:textSize="15dp"
+        android:textColor="#999999"
+        android:id="@+id/texto_cargando_historico"
+        android:textAlignment="center"/>
+
+    <android.support.v4.widget.Space
+        android:layout_width="wrap_content"
+        android:layout_height="10dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" "
+        android:textSize="10dp"
+        android:textColor="#AAAAAA"
+        android:id="@+id/texto_fechas_mostradas"
+        android:textAlignment="center"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Selecciona un filtro"
-        android:textSize="10dp"
-        android:textColor="#999999"
-        android:layout_weight="1"
+        android:textSize="15dp"
+        android:textColor="#777777"
         android:textAlignment="center"/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/selector_contaminante"
-        android:entries="@array/spinner_filtros"
-        android:layout_weight="1" />
+        android:entries="@array/spinner_filtros" />
 
 
     <android.support.v4.widget.Space
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_height="20dp" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:srcCompat="@mipmap/logo_grupo_investigacion"
-        android:maxHeight="30dp"
-        android:layout_weight="1"/>
+        android:maxHeight="30dp" />
 
 
 </LinearLayout>

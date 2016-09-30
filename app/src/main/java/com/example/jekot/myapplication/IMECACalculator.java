@@ -5,8 +5,10 @@ package com.example.jekot.myapplication;
  */
 
 public class IMECACalculator {
+    // Este arreglo representa en orden descendiente los valores para calidad del aire según el IMECA.
     private static String[] IMECA_VALUES = {"Buena", "Regular", "Mala", "Muy Mala", "Extremadamente Mala"};
 
+    // Obtiene el texto IMECA de el contaminante especificado por contaminant y el número de value.
     public static String getIMECAEstimate(String contaminant, double value){
         if(contaminant.equals("NO2")){return getRangeFor(calculateNO2(value));}
         else if(contaminant.equals("PM10")){return getRangeFor(calculatePM10(value));}
@@ -14,6 +16,8 @@ public class IMECACalculator {
         return "ERROR";
     }
 
+    /*  Recordar que para cada contaminante, su cálculo para obtener el valor de IMECA es distinto */
+    // Partículas menores a 10 ug
     public static double calculatePM10(double pM10){
         if(pM10 <= 120){
             return (pM10 *5)/6 ;
@@ -26,6 +30,7 @@ public class IMECACalculator {
         }
     }
 
+    // NO2
     public static double calculateNO2(double nO2){
         if(nO2 <= 0.105){
             return (nO2 *50)/ 0.105;
@@ -44,6 +49,7 @@ public class IMECACalculator {
         }
     }
 
+    // Partícuas menores a 2.5 ug
     public static double calculatePM25(double pM25){
         if(pM25 <= 15.4){
             return (pM25*50) / 15.4;
@@ -62,6 +68,7 @@ public class IMECACalculator {
         }
     }
 
+    // De acuerdo al valor IMECA, regresamos su descripción de índice de calidad.
     public static String getRangeFor(double calculationValue){
         if(calculationValue <= 50.0){
             return IMECA_VALUES[0];
@@ -78,6 +85,7 @@ public class IMECACalculator {
         return IMECA_VALUES[4];
     }
 
+    // Obtiene el color de la librería de colores según su descripción del IMECA
     public static int getColor(String IMECAValue){
         switch(IMECAValue){
             case "Buena":
@@ -95,6 +103,7 @@ public class IMECACalculator {
         }
     }
 
+    // Obtiene la imagen de la librería de colores según su descripción del IMECA
     public static int getImage(String IMECAValue){
         switch(IMECAValue){
             case "Buena":
